@@ -5,11 +5,11 @@
 
   const app = express();
 
-  // Tambahkan middleware untuk mem-parsing JSON body
   app.use(express.json());
 
   app.use(cors({
-    origin: 'http://localhost:5173' // URL frontend Anda
+    origin: 'http://localhost:5174',
+    credentials: true
   }));
 
   app.use((req, res, next) => {
