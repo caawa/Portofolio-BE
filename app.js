@@ -8,12 +8,13 @@
   app.use(express.json());
 
   app.use(cors({
-    origin: 'http://localhost:5174',
+    origin: ['http://localhost:5173', 'http://localhost:5174'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
   }));
-
+  
   app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+    res.header('Access-Control-Allow-Origin', ['http://localhost:5173', 'http://localhost:5174']);
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
   });
@@ -112,16 +113,20 @@
       const values = [now, id];
       conn.query(queryStr, values, (err, results) => {
         if (err) {
-          console.log(err);
-        } else {
-          res.status(200).json({
-            "success" : true,
-            "message" : "Sukses menghapus data",
-            "data" : null
+          console.error(err);
+          return res.status(500).json({
+            success: false,
+            message: "Gagal menghapus siswa",
+            error: err.message
           });
         }
-      })
-    })
+        res.status(200).json({
+          success: true,
+          message: "Sukses menghapus data",
+          data: null
+        });
+      });
+    });
 
   app.listen(3000, () => {
       console.log('Server berjalan di port 3000');
