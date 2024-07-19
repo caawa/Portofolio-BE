@@ -8,17 +8,11 @@
   app.use(express.json());
 
   app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:5174'],
+    origin: 'http://localhost:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
   }));
   
-  app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', ['http://localhost:5173', 'http://localhost:5174']);
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    next();
-  });
-
   app.get('/get-siswa', function (req, res) {
       const queryStr = 'SELECT * FROM siswa WHERE deletedAt IS NULL';
       conn.query(queryStr, (err, results) => {
